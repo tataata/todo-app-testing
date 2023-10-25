@@ -1,21 +1,18 @@
+import { useState } from 'react';
 import './App.css';
+import List from './List'
+import AddItem from './AddItem';
 
 function App() {
+  const [ tasks, setTasks ] = useState([])
+  const addNewTask = (text) => {
+    setTasks([...tasks, { task: text }])
+  }
   return (
     <div className="App">
-      <header className="App-header">
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      <h1>My To Do List</h1>
+      <AddItem addToList = {addNewTask} />
+      <List tasks = {tasks} />
     </div>
   );
 }
