@@ -1,4 +1,6 @@
 import {  render, screen } from '@testing-library/react';
+import userEvent from '@testing-library/user-event'
+
 import List from './List';
 
 describe('List component test suite', () => {
@@ -29,4 +31,32 @@ describe('List component test suite', () => {
     expect(text).toBeInTheDocument();
   })
 
+  test('renders a delete button for each item in the list', () => {
+    render(<List tasks={[{task: 'A', id: 1}]} />);
+    const text = screen.getByText('Delete');
+    expect(text).toBeInTheDocument();
+  })
+
+  test('calls the callback function with the first id when the delete button of the first item is clicked', async () => {
+    let removeFromList = jest.fn()
+    render(<List tasks={[{task: 'A', id: 1}]} removeFromList={removeFromList} />)
+    // initialise the user events
+    let user = userEvent.setup()
+    // find all buttons
+    let buttons = screen.getAllByRole('button', { name: /Delete/i })
+    // simulate the click
+    await user.click(buttons[0])
+    expect(removeFromList).toHaveBeenCalledWith(1)
+  })
+
+  test('calls the callback function with the second id when the delete button of the second item is clicked', async () => {
+    let removeFromList = jest.fn()
+    render(<List tasks={[{task: 'A', id: 1}, {task: 'B', id: 2}]} removeFromList={removeFromList} />);
+    let user = userEvent.setup()
+    // find all buttons
+    let buttons = screen.getAllByRole('button', { name: /Delete/i })
+    // simulat the click on the first button
+    await user.click(buttons[1])
+    expect(removeFromList).toHaveBeenCalledWith(2);
+  })
 })

@@ -65,4 +65,23 @@ describe('App component suite', () => {
     expect(emptyListText).not.toBeInTheDocument()
   })
 
+  test('removes the item from the list on click /delete/ button', async () => {
+    // arrange
+    render(<App />)
+    // act -- add item in the list, and remove it after
+    // initialise the user events
+    let user = userEvent.setup()
+    // simulating typing
+    let input = screen.getByLabelText('Task')
+    await user.type(input, 'sleep')
+    // simulating the clicks
+    await user.click(screen.getByRole('button', { name: /Add/i }))
+    let buttons = screen.getAllByRole('button', { name: /Delete/i })
+    // if useing variable button: simulate the click on the first button
+    // await user.click(buttons[0])
+    await user.click(screen.getByRole('button', { name: /Delete/i }))
+    // assertion
+    let removedItem = screen.queryByText('sleep')
+    expect(removedItem).not.toBeInTheDocument()
+  })
 })
