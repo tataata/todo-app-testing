@@ -1,27 +1,25 @@
-import { useState } from "react";
+import { useState } from "react"
 
 const AddItem = ({ addToList }) => {
-  const [text, setText] = useState("");
-  return (
+  const [text, setText] = useState('')
+  return(
     <div className="AddItem">
       <p>Please enter your task:</p>
-      <label htmlFor="todo">Task</label>
-      <input
-        type="text"
+        <label htmlFor="todo">Task</label>
+        <input 
+        type="text" 
         id="todo"
         value={text}
         onChange={(e) => setText(e.target.value)}
-      />
-      <button
+        />
+        <button
         onClick={() => {
-          addToList(text);
-          setText("");
-        }}
-      >
-        Add
-      </button>
+          addToList(text)
+          setText('') 
+        }
+        }>Add</button>
     </div>
-  );
-};
+  )
+}
 
-export default AddItem;
+export default AddItem

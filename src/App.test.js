@@ -16,50 +16,53 @@ describe('App component suite', () => {
 
   })
 
-  // // integration test: testing that 3 components work together
-  // test('adds typed item to the empty list', async () => {
-  //   render(<App />);
-  //   let user = userEvent.setup()
-  //   // simulat the typing: 
-  //   let input = screen.getByLabelText('Task')
-  //   await user.type(input, 'a')
-  //   // simulat the click: 
-  //   await user.click(screen.getByRole('button', { name: /Add/i }))
-  //   const emptyListText = screen.getByText('a')
-  //   expect(emptyListText).toBeInTheDocument()
-  // })
+  // integratoin test: testing that 3 components work together smoothly
+  test('adds typed item to the empty list', async () => {
+    render(<App />);
+    // act -- typing, invoking userEvent.setup() before the component is rendered
+    let user = userEvent.setup();
+    // simulating typing
+    let input = screen.getByLabelText('Task')
+    await user.type(input, 'love')
+    // simulate the click
+    await user.click(screen.getByRole('button', {name: /add/i}))
+    // assertion
+    const emptyListText = screen.getByText('love')
+    expect(emptyListText).toBeInTheDocument()
+  })
 
-  // test('adds item to a not empty list when input field is used', async () => {
-  //   render (<App />)
-  //   // set up user and do actions
-  //   let user = userEvent.setup()
-  //   let input = screen.getByLabelText('Task')
-  //   // Add first item
-  //   await user.type(input, 'A')
-  //   await user.click(screen.getByRole('button', { name: /Add/i }))
-  //   // Add second item
-  //   await user.type(input, 'B')
-  //   await user.click(screen.getByRole('button', { name: /Add/i }))
-  //   // check the first item is present:
-  //   let listItemA  = screen.getByText('A')
-  //   expect(listItemA).toBeInTheDocument()
-  //   // check the second item is present:
-  //   let listItemB = screen.getByText('B')
-  //   expect(listItemB).toBeInTheDocument()
-  // })
 
-  // // do this test as an assignmet!
-  // test('does not display text for empty list when an item is added', async () => {
-  //   render(<App />);
-  //   let user = userEvent.setup()
-  //   // simulat the typing: 
-  //   let input = screen.getByLabelText('Task')
-  //   await user.type(input, 'a')
-  //   // simulat the click: 
-  //   await user.click(screen.getByRole('button', { name: /Add/i }))
-  //   // The methods queryby... are used to test for missing elements
-  //   const emptyListText = screen.queryByText('No tasks')
-  //   expect(emptyListText).not.toBeInTheDocument()
-  // })
+  test('adds item to a not empty list when input field is used', async () => {
+    render (<App />)
+    // set up user and do actions
+    let user = userEvent.setup()
+    let input = screen.getByLabelText('Task')
+    // Add first item
+    await user.type(input, 'A')
+    await user.click(screen.getByRole('button', { name: /Add/i }))
+    // Add second item
+    await user.type(input, 'B')
+    await user.click(screen.getByRole('button', { name: /Add/i }))
+    // check the first item is present:
+    let listItemA  = screen.getByText('A')
+    expect(listItemA).toBeInTheDocument()
+    // check the second item is present:
+    let listItemB = screen.getByText('B')
+    expect(listItemB).toBeInTheDocument()
+  })
+  
+  // do this test as an assignmet!
+  test('does not display headline for empty list when an item is added', async () => {
+    render(<App />);
+    let user = userEvent.setup()
+    // simulat the typing: 
+    let input = screen.getByLabelText('Task')
+    await user.type(input, 'a')
+    // simulate the click: 
+    await user.click(screen.getByRole('button', { name: /Add/i }))
+    // The methods queryBy... are used to test for missing elements
+    const emptyListText = screen.queryByText('No tasks')
+    expect(emptyListText).not.toBeInTheDocument()
+  })
 
 })
