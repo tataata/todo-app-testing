@@ -1,5 +1,6 @@
 import {  render, screen } from '@testing-library/react';
 import List from './List';
+import userEvent from '@testing-library/user-event';
 
 describe('List component test suite', () => {
   test('renders a heading', () => {
@@ -29,4 +30,28 @@ describe('List component test suite', () => {
     expect(text).toBeInTheDocument();
   })
 
+  test('renders a delete button for each item in the list', () => {
+    render(<List tasks={[ {task: 'A', id: 1} ]} />)
+    const text = screen.getByText('Delete');
+    expect(text).toBeInTheDocument();
+  })
+
+  test('renders a delete buttons for each item in the list of two tasks', () => {
+    render(<List tasks={[ {task: 'A', id: 1}, {task: 'B', id: 2} ]} />)
+    const deleteButtons = screen.getAllByRole('button', { name: /delete/i });
+    expect(deleteButtons).toHaveLength(2);
+  })
+
+  // callbacks
+  test('calls the callback function click on the /delete/ button removes the corresponding task', async () => {
+    let removeFromList = jest.fn()
+    render(<List tasks={[{task: 'A', id: 19}]} removeFromList={removeFromList} />)
+    // initialise user events
+    let user = userEvent.setup()
+    // find all buttons
+    let buttons = screen.getAllByRole('button', { name: /delete/i })
+    // simulate click
+    await user.click(buttons[0])
+    expect(removeFromList).toHaveBeenCalledWith(19)
+  })
 })
