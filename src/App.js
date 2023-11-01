@@ -5,14 +5,20 @@ import AddItem from './AddItem';
 
 function App() {
   const [ tasks, setTasks ] = useState([])
+  // add id for removal of the items
   const addNewTask = (text) => {
-    setTasks([...tasks, { task: text }])
+    setTasks([...tasks, { task: text, id: (tasks.length + 1)  }])
+  }
+  const deleteTask = (id) => {
+    let remainingTasks = tasks.filter(item => item.id !== id)
+    setTasks(remainingTasks)
   }
   return (
     <div className="App">
       <h1>My To Do List</h1>
       <AddItem addToList = {addNewTask} />
-      <List tasks = {tasks} />
+      {/* Pass new props */}
+      <List tasks = {tasks} removeFromList = {deleteTask}  />
     </div>
   );
 }
