@@ -6,7 +6,7 @@ const Item = ({ task, deleteItem, updateItem }) => {
   const [currentValue, setCurrentValue] = useState(false)
 
   return (
-    <li className="Item" key={task.id} className="todo-item"> {edit ? (<input
+    <li className="Item todo-item" key={task.id}> {edit ? (<input
       value={currentValue ? currentValue : task.task}
       onChange={
         (event) => {
