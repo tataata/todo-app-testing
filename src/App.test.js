@@ -85,4 +85,35 @@ describe('App component suite', () => {
     let removedItem = screen.queryByText('sleep')
     expect(removedItem).not.toBeInTheDocument()
   })
+
+
+  test('displays an updated item in the list', async () => {
+    render(<App />); 
+    let user = userEvent.setup()
+    await user.type(screen.getByLabelText('Task'), 'A')
+    await user.click(screen.getByRole('button', { name: /Add/i }))
+    let buttons = screen.getAllByRole('button', { name: /Edit/i })
+    await user.click(buttons[0])
+    let inputText = screen.getByDisplayValue('A')    
+    await user.type(inputText, 'B')
+    await user.click(screen.getByRole('button', { name: /Save/i }))
+    let updatedItem = screen.getByText('AB')
+    expect(updatedItem).toBeInTheDocument();
+  })
+
+  test('only updates the selected item', async () => {
+    render(<App />); 
+    let user = userEvent.setup()
+    await user.type(screen.getByLabelText('Task'), 'A')
+    await user.click(screen.getByRole('button', { name: /Add/i }))
+    await user.type(screen.getByLabelText('Task'), 'B')
+    await user.click(screen.getByRole('button', { name: /Add/i }))
+    let buttons = screen.getAllByRole('button', { name: /Edit/i })
+    await user.click(buttons[0])
+    let inputText = screen.getByDisplayValue('A')    
+    await user.type(inputText, 'B')
+    await user.click(screen.getByRole('button', { name: /Save/i }))
+    let notUpdatedItem = screen.getByText('B')
+    expect(notUpdatedItem).toBeInTheDocument();
+  })
 })
