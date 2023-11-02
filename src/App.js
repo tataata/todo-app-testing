@@ -15,12 +15,17 @@ function App() {
     setTasks(remainingTasks)
   }
 
+  const updateTask = (updatedTask) => {
+    let updatedList = tasks.map(item => item.id === updatedTask.id ? {...item, task: updatedTask.task } : item)
+    setTasks(updatedList)
+  }
+
   return (
     <div className="App">
       <h1>My To Do List</h1>
       {/* Pass the new props */}
       <AddItem addToList = {addNewTask} />
-      <List tasks = {tasks} removeFromList={deleteTask} />
+      <List tasks = {tasks} deleteItem = {deleteTask} updateItem = {updateTask}  />
     </div>
   );
 }
