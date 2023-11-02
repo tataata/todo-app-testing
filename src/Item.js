@@ -16,7 +16,10 @@ const Item = ({ task, deleteItem, updateItem }) => {
     }
       {edit ? (
         <button onClick={() => {
+          // 
+          if(currentValue !== false) {
             updateItem({ ...task, task: currentValue })
+          }
           setEdit(false)
         }}>Save</button>) :
         (<button onClick={() => {

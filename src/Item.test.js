@@ -57,4 +57,18 @@ describe ('Item',() => {
     // spread in the object and only change the task property to the expected. This will make the test easier to maintain if the strucutre if changes later, and makes it more clear that only one property is changed here
     await expect(updateItem).toHaveBeenCalledWith({...testTask, task: 'AB'})
   })
+
+  test('do not call the callback function when save is clicked but there were no change to the item', async () => {
+    const updateItem = jest.fn()
+    let testTask = { task: 'Sleep', id: 1 }
+    render(<Item task={{ task: 'Sleep', id: 1 }} updateItem={updateItem} />);
+    let user = userEvent.setup()
+    await user.click(screen.getByRole('button', { name: /Edit/i }))
+    // simulate the click inside of input
+    let input = screen.getByRole('textbox', {value: 'Sleep'})
+    await user.click(input)
+    // simulate the click on Save button
+    await user.click(screen.getByRole('button', { name: /Save/i }))
+    await expect(updateItem).not.toHaveBeenCalled();
+  })
 })
